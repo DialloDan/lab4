@@ -1,14 +1,21 @@
 import { Router } from 'express';
 
-import page404 from './pages/404';
-import pageRoot from './pages/root';
-import v1 from './v1/';
+import page404 from './basic/404';
+import pageRoot from './basic/root';
+
+import agents from './things/agents';
+import tasks from './things/tasks';
 
 const router = Router();
 
-router.use(`/v1`, v1);
+// basic
 
 router.use(pageRoot);
 router.use(page404);
+
+// things
+
+router.use(agents);
+router.use(tasks);
 
 export default router;
