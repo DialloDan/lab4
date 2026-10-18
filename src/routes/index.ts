@@ -8,14 +8,14 @@ import tasks from './things/tasks';
 
 const router = Router();
 
-// basic
-
-router.use(pageRoot);
-router.use(page404);
-
 // things
 
 router.use(agents);
 router.use(tasks);
+
+// basic
+
+router.use(pageRoot);
+router.use(page404);
 
 export default router;

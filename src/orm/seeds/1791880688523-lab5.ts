@@ -23,11 +23,13 @@ export class lab51791880688523 implements MigrationInterface {
 	task.agent = agent;
 	task.assignment = 'Producing';
 	task.status = 'In progress';
+        await taskRepository.save(task);
 
         task = new Task();
 	task.agent = agent;
 	task.assignment = 'Recounting';
 	task.status = 'In progress';
+        await taskRepository.save(task);
 
 	// --------------------------- //
 
@@ -46,11 +48,13 @@ export class lab51791880688523 implements MigrationInterface {
 	task.agent = agent;
 	task.assignment = 'Working out';
 	task.status = 'In progress';
+        await taskRepository.save(task);
 
         task = new Task();
 	task.agent = agent;
 	task.assignment = 'Producing';
 	task.status = 'Done';
+        await taskRepository.save(task);
 
 	// --------------------------- //
 
@@ -69,6 +73,7 @@ export class lab51791880688523 implements MigrationInterface {
 	task.agent = agent;
 	task.assignment = 'Relaxing';
 	task.status = 'In progress';
+        await taskRepository.save(task);
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
