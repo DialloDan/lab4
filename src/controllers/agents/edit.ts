@@ -1,13 +1,16 @@
-import { Request, Response } from 'express';
+import { Request, Response, NextFunction } from 'express';
 
 import { AgentService } from '../../services/AgentService';
 import { AgentDTO } from '../../dto/AgentDTO';
 
-export async function edit(req: Request, res: Response): Promise<Response> {
-  const id = req.params.id;
+export async function edit(req: Request, res: Response, next: NextFunction): Promise<void> {
+  try {
+    const id = req.params.id;
+    const agentService = new AgentService();
+    const agent = await agentService.edit(Number(id), req.body);
 
-  const agentService = new AgentService();
-  const agent = await agentService.edit(Number(id), req.body);
-
-  return res.json(new AgentDTO(agent));
+    res.json(new AgentDTO(agent));
+  } catch (error) {
+    next(error);
+  }
 }

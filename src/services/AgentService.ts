@@ -1,6 +1,7 @@
 import { getRepository } from 'typeorm';
 import { Agent } from "orm/entities/Agent";
 import { Task } from "orm/entities/Task";
+import { CustomError } from "utils/response/custom-error/CustomError";
 
 class AgentService {
   private taskRepository = getRepository(Task);
@@ -22,7 +23,7 @@ class AgentService {
     const agent = await this.agentRepository.findOne({ where: { id } });
 
     if (!agent) {
-      throw new Error(`Agent with id:${id} not found.`);
+      throw new CustomError(409, 'Raw', `Agent with id:${id} not found.`, null, null)
     }
 
     return agent;
@@ -32,7 +33,7 @@ class AgentService {
     const agent = await this.agentRepository.findOne({ where: { id } });
 
     if (!agent) {
-      throw new Error(`Agent with id:${id} not found.`);
+      throw new CustomError(409, 'Raw', `Agent with id:${id} not found.`, null, null)
     }
 
     agent.first_name = agentData.first_name;
@@ -53,7 +54,7 @@ class AgentService {
     const agent = await this.agentRepository.findOne({ where: { id } });
 
     if (!agent) {
-      throw new Error(`Agent with id:${id} not found.`);
+      throw new CustomError(409, 'Raw', `Agent with id:${id} not found.`, null, null)
     }
 
     await this.taskRepository.delete({ agent: { id } });

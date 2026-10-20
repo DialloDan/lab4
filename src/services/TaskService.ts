@@ -1,6 +1,7 @@
 import { getRepository } from 'typeorm';
 import { Task } from "orm/entities/Task";
 import { Agent } from "orm/entities/Agent";
+import { CustomError } from "utils/response/custom-error/CustomError";
 
 class TaskService {
   private taskRepository = getRepository(Task);
@@ -10,7 +11,7 @@ class TaskService {
     const agent = await this.agentRepository.findOne({ where: { id: taskData.agent_id } });
 
     if (!agent) {
-      throw new Error(`Task agent with id:${taskData.agent_id} not found.`);
+      throw new CustomError(409, 'Raw', `Task agent with id:${taskData.agent_id} not found.`, null, null)
     }
 
     const realData = {
@@ -36,7 +37,7 @@ class TaskService {
     const task = await this.taskRepository.findOne({ where: { id }, relations: ['agent'] });
 
     if (!task) {
-      throw new Error(`Task with id:${id} not found.`);
+      throw new CustomError(409, 'Raw', `Task with id:${id} not found.`, null, null)
     }
 
     return task;
@@ -46,13 +47,13 @@ class TaskService {
     const task = await this.taskRepository.findOne({ where: { id } });
 
     if (!task) {
-      throw new Error(`Task with id:${id} not found.`);
+      throw new CustomError(409, 'Raw', `Task with id:${id} not found.`, null, null)
     }
 
     const agent = await this.agentRepository.findOne({ where: { id: taskData.agent_id } });
 
     if (!agent) {
-      throw new Error(`Task agent with id:${taskData.agent_id} not found.`);
+      throw new CustomError(409, 'Raw', `Task agent with id:${taskData.agent_id} not found.`, null, null)
     }
 
     task.agent = agent;
@@ -70,7 +71,7 @@ class TaskService {
     const task = await this.taskRepository.findOne({ where: { id }, relations: ['agent'] });
 
     if (!task) {
-      throw new Error(`Task with id:${id} not found.`);
+      throw new CustomError(409, 'Raw', `Task with id:${id} not found.`, null, null)
     }
 
     await this.taskRepository.delete(id);

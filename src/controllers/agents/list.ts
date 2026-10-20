@@ -1,11 +1,15 @@
-import { Request, Response } from "express";
+import { Request, Response, NextFunction } from "express";
 
 import { AgentService } from '../../services/AgentService';
 import { AgentDTO } from '../../dto/AgentDTO';
 
-export async function list(req: Request, res: Response): Promise<Response> {
-  const agentService = new AgentService();
-  const agents = await agentService.list();
+export async function list(req: Request, res: Response, next: NextFunction): Promise<void> {
+  try {
+    const agentService = new AgentService();
+    const agents = await agentService.list();
 
-  return res.json(AgentDTO.fromMany(agents));
+    res.json(AgentDTO.fromMany(agents));
+  } catch (error) {
+    next(error);
+  }
 }
