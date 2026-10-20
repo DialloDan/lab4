@@ -1,12 +1,14 @@
-import {MigrationInterface, QueryRunner, getRepository } from "typeorm";
+import {MigrationInterface, QueryRunner} from "typeorm";
 
-import { Agent } from '../entities/agents/Agent';
-import { Task } from '../entities/tasks/Task';
+import { Agent } from '../entities/Agent';
+import { Task } from '../entities/Task';
 
-export class lab51791880688523 implements MigrationInterface {
+export class lab61792497984160 implements MigrationInterface {
     public async up(queryRunner: QueryRunner): Promise<void> {
-        const agentRepository = getRepository(Agent);
-        const taskRepository = getRepository(Task);
+        const agentRepository = queryRunner.manager.getRepository(Agent);
+        const taskRepository = queryRunner.manager.getRepository(Task);
+
+        await queryRunner.query('TRUNCATE TABLE "agents" RESTART IDENTITY CASCADE;');
 
         let agent = new Agent();
         agent.first_name = 'Walter';
@@ -20,18 +22,18 @@ export class lab51791880688523 implements MigrationInterface {
         await agentRepository.save(agent);
 
         let task = new Task();
-	task.agent = agent;
-	task.assignment = 'Producing';
-	task.status = 'In progress';
+        task.agent = agent;
+        task.assignment = 'Producing';
+        task.status = 'In progress';
         await taskRepository.save(task);
 
         task = new Task();
-	task.agent = agent;
-	task.assignment = 'Recounting';
-	task.status = 'In progress';
+        task.agent = agent;
+        task.assignment = 'Recounting';
+        task.status = 'In progress';
         await taskRepository.save(task);
 
-	// --------------------------- //
+        // --------------------------- //
 
         agent = new Agent();
         agent.first_name = 'Jesse';
@@ -45,18 +47,18 @@ export class lab51791880688523 implements MigrationInterface {
         await agentRepository.save(agent);
 
         task = new Task();
-	task.agent = agent;
-	task.assignment = 'Working out';
-	task.status = 'In progress';
+        task.agent = agent;
+        task.assignment = 'Working out';
+        task.status = 'In progress';
         await taskRepository.save(task);
 
         task = new Task();
-	task.agent = agent;
-	task.assignment = 'Producing';
-	task.status = 'Done';
+        task.agent = agent;
+        task.assignment = 'Producing';
+        task.status = 'Done';
         await taskRepository.save(task);
 
-	// --------------------------- //
+        // --------------------------- //
 
         agent = new Agent();
         agent.first_name = 'Saul';
@@ -70,9 +72,9 @@ export class lab51791880688523 implements MigrationInterface {
         await agentRepository.save(agent);
 
         task = new Task();
-	task.agent = agent;
-	task.assignment = 'Relaxing';
-	task.status = 'In progress';
+        task.agent = agent;
+        task.assignment = 'Relaxing';
+        task.status = 'In progress';
         await taskRepository.save(task);
     }
 

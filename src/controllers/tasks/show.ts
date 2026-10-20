@@ -1,27 +1,13 @@
-import { Request, Response, NextFunction } from 'express';
-import { getRepository } from 'typeorm';
+import { Request, Response } from 'express';
 
-import { Task } from 'orm/entities/tasks/Task';
-import { CustomError } from 'utils/response/custom-error/CustomError';
+import { TaskService } from '../../services/TaskService';
+import { TaskDTO } from '../../dto/TaskDTO';
 
-export const show = async (req: Request, res: Response, next: NextFunction) => {
+export async function show (req: Request, res: Response): Promise<Response> {
   const id = req.params.id;
+  
+  const taskService = new TaskService();
+  const task = await taskService.show(Number(id));
 
-  const taskRepository = getRepository(Task);
-  try {
-    const task = await taskRepository
-      .createQueryBuilder('task')
-      .leftJoinAndSelect('task.agent', 'agent')
-      .where('task.id = :id', { id })
-      .getOne();
-
-    if (!task) {
-      const customError = new CustomError(404, 'General', `Task with id:${id} not found.`, ['Task not found.']);
-      return next(customError);
-    }
-    res.customSuccess(200, 'Task found', task);
-  } catch (err) {
-    const customError = new CustomError(400, 'Raw', 'Error', null, err);
-    return next(customError);
-  }
-};
+  return res.json(new TaskDTO(task));
+}

@@ -1,4 +1,3 @@
-import bcrypt from 'bcryptjs';
 import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 
 @Entity('agents')

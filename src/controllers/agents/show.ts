@@ -1,25 +1,13 @@
-import { Request, Response, NextFunction } from 'express';
-import { getRepository } from 'typeorm';
+import { Request, Response } from 'express';
 
-import { Agent } from 'orm/entities/agents/Agent';
-import { CustomError } from 'utils/response/custom-error/CustomError';
+import { AgentService } from '../../services/AgentService';
+import { AgentDTO } from '../../dto/AgentDTO';
 
-export const show = async (req: Request, res: Response, next: NextFunction) => {
+export async function show(req: Request, res: Response): Promise<Response> {
   const id = req.params.id;
 
-  const agentRepository = getRepository(Agent);
-  try {
-    const agent = await agentRepository
-      .createQueryBuilder('agent')
-      .getOne();
+  const agentService = new AgentService();
+  const agent = await agentService.show(Number(id));
 
-    if (!agent) {
-      const customError = new CustomError(404, 'General', `Agent with id:${id} not found.`, ['Agent not found.']);
-      return next(customError);
-    }
-    res.customSuccess(200, 'Agent found', agent);
-  } catch (err) {
-    const customError = new CustomError(400, 'Raw', 'Error', null, err);
-    return next(customError);
-  }
-};
+  return res.json(new AgentDTO(agent));
+}

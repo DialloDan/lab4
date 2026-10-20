@@ -1,7 +1,6 @@
-import bcrypt from 'bcryptjs';
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 
-import { Agent } from "./../agents/Agent"
+import { Agent } from "./Agent"
 
 @Entity('tasks')
 export class Task {
