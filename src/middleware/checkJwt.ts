@@ -26,7 +26,7 @@ export const checkJwt = (req: Request, res: Response, next: NextFunction) => {
   try {
     // Refresh and send a new token on every request
     const newToken = createJwtToken(jwtPayload as JwtPayload);
-    res.setHeader('token', `Bearer ${newToken}`);
+    res.setHeader('Authorization', `Bearer ${newToken}`);
     return next();
   } catch (err) {
     const customError = new CustomError(400, 'Raw', "Token can't be created", null, err);
